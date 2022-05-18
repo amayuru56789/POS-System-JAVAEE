@@ -1,0 +1,91 @@
+SHOW DATABASES;
+CREATE DATABASE IF NOT EXISTS `Pos System`;
+SHOW DATABASES;
+USE `Pos System`;
+
+<----------------------------------Customer-Table------------------------------------>
+
+CREATE TABLE IF NOT EXISTS Customer(
+	customerID VARCHAR(6) NOT NULL,
+	customerName VARCHAR(45) NOT NULL DEFAULT 'Unknown',
+	customerAddress VARCHAR(25) NOT NULL,
+	customerSalary DECIMAL NOT NULL DEFAULT '0.00',
+	CONSTRAINT PRIMARY KEY (customerID) 
+);
+
+SHOW TABLES;
+DESC Customer;
+
+<----------------------------------Customer-Values------------------------------------>
+
+INSERT INTO Customer VALUES
+('C001','Amayuru','Kalutara',100000.00),
+('C002','Gota','Colombo',200000.00);
+
+SELECT * FROM Customer;
+
+<-------------------------------------Item-Table------------------------------------->
+
+CREATE TABLE IF NOT EXISTS item(
+	itemCode VARCHAR(6) NOT NULL,
+	itemName VARCHAR(45) NOT NULL DEFAULT 'Unknown',
+	itemPrice DECIMAL(6,2) NOT NULL DEFAULT '0.00',
+	qtyOnHand INT(5),
+	CONSTRAINT PRIMARY KEY (itemCode) 
+);
+
+SHOW TABLES;
+DESC item;
+
+<-----------------------------------Item-Values-------------------------------------->
+
+INSERT INTO item 
+VALUES('I-001','Battery',35.00,10);
+
+SELECT * FROM item;
+
+<----------------------------------------Order-Table-------------------------------------->
+
+CREATE TABLE IF NOT EXISTS `order`(
+	orderID VARCHAR(6),
+	customerID VARCHAR(6),
+	total DECIMAL(6,2),
+	orderDate DATE,
+	CONSTRAINT PRIMARY KEY (orderId),
+	CONSTRAINT FOREIGN KEY (customerID) REFERENCES Customer (customerID)
+	ON DELETE CASCADE ON UPDATE CASCADE
+	 
+);
+
+SHOW TABLES;
+DESC `Order`;
+
+<----------------------------------------Values------------------------------------------->
+
+INSERT INTO `Order` VALUES
+('O-001','C001',100.00,'2021-08-18'),
+('O-002','C002',50.00,'2021-08-18');
+
+SELECT * FROM `Order`;
+
+<----------------------------------------OrderDetail-------------------------------------->
+
+CREATE TABLE IF NOT EXISTS `Order Detail`(
+	orderId VARCHAR(6),
+	itemCode VARCHAR(6),
+	itemPrice DECIMAL(6,2),
+	orderQTY INT(11),
+	total DECIMAL(6,2),
+	CONSTRAINT PRIMARY KEY(orderId,itemCode),
+	CONSTRAINT FOREIGN KEY (orderId) REFERENCES `Order` (orderId),
+	CONSTRAINT FOREIGN KEY (itemCode) REFERENCES Item (itemCode)
+	ON DELETE CASCADE ON UPDATE CASCADE	
+);
+
+SHOW TABLES;
+DESC `Order Detail`;
+
+INSERT INTO `Order Detail` VALUES
+('O-001','I-001',50.00,'1',10.00);
+
+SELECT * FROM `Order Detail`;
