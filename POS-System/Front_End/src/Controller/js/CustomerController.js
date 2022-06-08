@@ -49,18 +49,13 @@ function saveCustomer(){
        customerDB.push(new CustomerDTO(custId,custName,custAddress,custSalary));
 }
 
+loadAllCustomers();
 function loadAllCustomers() {
     $("#customerTable").empty();
-    $.ajax({
-        url: "http://localhost:8080/Pos_System/customer?option=GETALL",
-        method: "GET",
-        success: function (resp) {
-            for (const customer of resp.data) {
-                let row = `<tr><td>${customer.id}</td><td>${customer.name}</td><td>${customer.address}</td><td>${customer.salary}</td></tr>`;
-                $("#customerTable").append(row);
-            }
-        }
-    });
+    for(var i of customerDB){
+        let row = `<tr><td>${i.getCustomerID()}</td><td>${i.getCustomerName()}</td><td>${i.getCustomerAddress()}</td><td>${i.getCustomerSalary()}</td></tr>`;
+        $("#customerTable").append(row);
+    }
 
 //search customer
     $("#button-addon2").click(function () {
