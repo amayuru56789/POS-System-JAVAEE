@@ -53,19 +53,11 @@ function saveCustomer(){
 loadAllCustomers();
 /*--------------------------------loadAllCustomers function for javaEE app------------------------------------*/
 function loadAllCustomers() {
-   /* $("#customerTable").empty();
+    $("#customerTable").empty();
     for(var i of customerDB){
         let row = `<tr><td>${i.getCustomerID()}</td><td>${i.getCustomerName()}</td><td>${i.getCustomerAddress()}</td><td>${i.getCustomerSalary()}</td></tr>`;
         $("#customerTable").append(row);
-    }*/
-
-    /*invoked ajax for send a request*/
-    $.ajax({
-       url:"http://localhost:8080/Pos_System/customer",
-       success:function (res){
-           console.log("KITT")
-       }
-    });
+    }
 
 //search customer
     $("#button-addon2").click(function () {
