@@ -30,12 +30,26 @@ public class CustomerServlet extends HttpServlet {
             PreparedStatement pstm = con.prepareStatement("select * from Customer");
             ResultSet rst = pstm.executeQuery();
             while (rst.next()) {
-                String customerID = rst.getString(1);
+                /*String customerID = rst.getString(1);
                 String customerName = rst.getString(2);
                 String customerAddress = rst.getString(3);
                 String customerSalary = rst.getString(4);
 
                 System.out.println(" id "+customerID+" name "+customerName+" address "+customerAddress+" salary "+customerSalary);
+*/
+                //arrayBuilder
+                JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+                /*--------------------------objectBuilder for generate json object---------------------------*/
+                JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+                objBuilder.add("id",rst.getString(1));
+                objBuilder.add("name",rst.getString(2));
+                objBuilder.add("address",rst.getString(3));
+                objBuilder.add("salary",rst.getDouble(4));
+                arrayBuilder.add(objBuilder.build()); //add to the array of json
+
+                System.out.println(arrayBuilder.build());
+
             }
 
 
