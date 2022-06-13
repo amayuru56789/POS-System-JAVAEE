@@ -62,6 +62,9 @@ function loadAllCustomers() {
     /*invoked ajax for send a request*/
     $.ajax({
        url:"http://localhost:8080/Pos_System/customer",
+       method:"GET",
+        //convert to json format
+       dataType:"json",
        success:function (res){
            console.log("KITT")
        }
