@@ -29,6 +29,13 @@ public class CustomerServlet extends HttpServlet {
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pos System", "root", "1234");
             PreparedStatement pstm = con.prepareStatement("select * from Customer");
             ResultSet rst = pstm.executeQuery();
+
+            //arrayBuilder
+            JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+            /*--------------------Writer for send a Response-------------------*/
+            PrintWriter writer = resp.getWriter();
+
             while (rst.next()) {
                 /*String customerID = rst.getString(1);
                 String customerName = rst.getString(2);
@@ -37,8 +44,6 @@ public class CustomerServlet extends HttpServlet {
 
                 System.out.println(" id "+customerID+" name "+customerName+" address "+customerAddress+" salary "+customerSalary);
 */
-                //arrayBuilder
-                JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
 
                 /*--------------------------objectBuilder for generate json object---------------------------*/
                 JsonObjectBuilder objBuilder = Json.createObjectBuilder();
@@ -48,7 +53,14 @@ public class CustomerServlet extends HttpServlet {
                 objBuilder.add("salary",rst.getDouble(4));
                 arrayBuilder.add(objBuilder.build()); //add to the array of json
 
-                System.out.println(arrayBuilder.build());
+                /*---------------------------objectBuilder for generate Response----------------------------*/
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status",200);
+                response.add("message","Done");
+                response.add("data",arrayBuilder.build());
+
+                /*System.out.println(arrayBuilder.build());*/
+                writer.print(response.build());
 
             }
 
@@ -59,9 +71,7 @@ public class CustomerServlet extends HttpServlet {
             e.printStackTrace();
         }
 
-        /*--------------------Writer for send a Response-------------------*/
-        PrintWriter writer = resp.getWriter();
-        writer.write("Hello KITT");
+
     }
 
 }
