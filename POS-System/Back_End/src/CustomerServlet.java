@@ -51,18 +51,20 @@ public class CustomerServlet extends HttpServlet {
                 objBuilder.add("name",rst.getString(2));
                 objBuilder.add("address",rst.getString(3));
                 objBuilder.add("salary",rst.getDouble(4));
+
                 arrayBuilder.add(objBuilder.build()); //add to the array of json
 
-                /*---------------------------objectBuilder for generate Response----------------------------*/
-                JsonObjectBuilder response = Json.createObjectBuilder();
-                response.add("status",200);
-                response.add("message","Done");
-                response.add("data",arrayBuilder.build());
 
-                /*System.out.println(arrayBuilder.build());*/
-                writer.print(response.build());
 
             }
+            /*---------------------------objectBuilder for generate Response----------------------------*/
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",200);
+            response.add("message","Done");
+            response.add("data",arrayBuilder.build());
+
+            /*System.out.println(arrayBuilder.build());*/
+            writer.print(response.build());
 
 
         } catch (ClassNotFoundException e) {

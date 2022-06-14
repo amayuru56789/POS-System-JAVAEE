@@ -9,7 +9,7 @@ document.getElementById("btnAdd").addEventListener("click", function (){
     $("#customerTable > tr").off("click");
 
     saveCustomer();
-    clearAll();
+    /*clearAll();*/
     loadAllCustomers();
 
     $("#customerTable > tr").click(function() {
@@ -60,13 +60,19 @@ function loadAllCustomers() {
     }*/
 
     /*invoked ajax for send a request*/
+    $("#customerTable").empty();
     $.ajax({
        url:"http://localhost:8080/Pos_System/customer",
        method:"GET",
         //convert to json format
        dataType:"json",
        success:function (res){
-           console.log("KITT")
+           /*console.log("KITT");*/
+           for (const cust of res.data) {
+               /*console.log(cust.id);*/
+               let row = `<tr><td>${cust.id}</td><td>${cust.name}</td><td>${cust.address}</td><td>${cust.salary}</td></tr>`;
+               $("#customerTable").append(row);
+           }
        }
     });
 
