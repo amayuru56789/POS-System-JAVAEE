@@ -77,5 +77,20 @@ public class CustomerServlet extends HttpServlet {
 
     }
 
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        /*System.out.println("KITT");*/
 
+        //gather customer information from textFields Using getParameter Method
+        String customerID = req.getParameter("customerID");
+        String customerName = req.getParameter("customerName");
+        String customerAddress = req.getParameter("customerAddress");
+        Double customerSalary = Double.valueOf(req.getParameter("customerSalary"));
+        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+
+
+        /*PrintWriter writer = resp.getWriter();
+        writer.print("Hello KITT");
+*/
+    }
 }
