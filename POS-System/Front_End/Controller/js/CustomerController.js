@@ -54,10 +54,13 @@ function saveCustomer(){
     $.ajax({
        url: "http://localhost:8080/Pos_System/customer",
        method: "POST",
-       data:data,
+       data:data, //if we send data with the request
        success:function (res){
            console.log(res);
-       }
+       },
+        error:function (ob,textStatus, error){
+           alert(textStatus);
+        }
     });
 }
 
@@ -138,7 +141,7 @@ function loadAllCustomers() {
 
     /*------------------------------deleteCustomer function for javaEE app------------------------------------*/
     function deleteCustomer(id) {
-        let customer;
+        /*let customer;
         if (id != null) {
             for (var i = 0; i < customerDB.length; i++) {
                 if (id == customerDB[i].getCustomerID()) {
@@ -150,7 +153,16 @@ function loadAllCustomers() {
             return true;
         } else {
             return false;
-        }
+        }*/
+
+        /*ajax request for deleteCustomer function*/
+        $.ajax({
+           url:"http://localhost:8080/Pos_System/customer",
+           method:"DELETE",
+           success:function (res){
+               console.log(res);
+           }
+        });
 
     }
 

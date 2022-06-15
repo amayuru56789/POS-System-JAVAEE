@@ -107,12 +107,21 @@ public class CustomerServlet extends HttpServlet {
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            resp.sendError(500,e.getMessage());
         } catch (SQLException e) {
             e.printStackTrace();
+            resp.sendError(500,e.getMessage());
         }
 
         /*PrintWriter writer = resp.getWriter();
         writer.print("Hello KITT");*/
 
     }
+
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Hello KITT");
+
+    }
+
 }
