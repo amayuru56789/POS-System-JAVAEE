@@ -38,7 +38,7 @@ document.getElementById("btnAdd").addEventListener("click", function (){
 
 /*--------------------------------saveCustomer function for javaEE app----------------------------------------*/
 function saveCustomer(){
-    //gather customer information
+    /*//gather customer information
        var custId = document.getElementById("txtCustId").value;
        var custName = document.getElementById("txtCustName").value;
        var custAddress = document.getElementById("txtCustAddress").value;
@@ -46,9 +46,19 @@ function saveCustomer(){
 
        //create object
 
-        /*Pass Values for the customerArray*/
-       customerDB.push(new CustomerDTO(custId,custName,custAddress,custSalary));
-
+        /!*Pass Values for the customerArray*!/
+       customerDB.push(new CustomerDTO(custId,custName,custAddress,custSalary));*/
+    var data = $("#customerForm").serialize(); //get information txtFields using form data
+    /*console.log(data);*/
+    /*----------------------ajax for saveCustomer function---------------------------*/
+    $.ajax({
+       url: "http://localhost:8080/Pos_System/customer",
+       method: "POST",
+       data:data,
+       success:function (res){
+           console.log(res);
+       }
+    });
 }
 
 loadAllCustomers();
