@@ -81,16 +81,38 @@ public class CustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /*System.out.println("KITT");*/
 
+        /*--------------------Writer for send a Response-------------------*/
+        PrintWriter writer = resp.getWriter();
+
         //gather customer information from textFields Using getParameter Method
         String customerID = req.getParameter("customerID");
         String customerName = req.getParameter("customerName");
         String customerAddress = req.getParameter("customerAddress");
         Double customerSalary = Double.valueOf(req.getParameter("customerSalary"));
-        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+        /*System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);*/
 
+        //database connection
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pos System", "root", "1234");
+            PreparedStatement pstm = con.prepareStatement("insert into Customer values (?,?,?,?)");
+            pstm.setObject(1,customerID);
+            pstm.setObject(2,customerName);
+            pstm.setObject(3,customerAddress);
+            pstm.setObject(4,customerSalary);
+            boolean b = pstm.executeUpdate() > 0;
+            if (b){
+                writer.write("Customer Added");
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
         /*PrintWriter writer = resp.getWriter();
-        writer.print("Hello KITT");
-*/
+        writer.print("Hello KITT");*/
+
     }
 }
