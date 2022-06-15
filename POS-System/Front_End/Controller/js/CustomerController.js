@@ -9,7 +9,7 @@ document.getElementById("btnAdd").addEventListener("click", function (){
     $("#customerTable > tr").off("click");
 
     saveCustomer();
-    /*clearAll();*/
+    clearAll();
     loadAllCustomers();
 
     $("#customerTable > tr").click(function() {
@@ -48,6 +48,7 @@ function saveCustomer(){
 
         /*Pass Values for the customerArray*/
        customerDB.push(new CustomerDTO(custId,custName,custAddress,custSalary));
+
 }
 
 loadAllCustomers();

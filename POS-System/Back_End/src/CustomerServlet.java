@@ -1,4 +1,5 @@
 import com.mysql.cj.jdbc.Driver;
+import com.mysql.cj.jdbc.JdbcConnection;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
@@ -75,5 +76,6 @@ public class CustomerServlet extends HttpServlet {
 
 
     }
+
 
 }
