@@ -22,6 +22,8 @@ public class MyFilter implements Filter {
 
         resp.addHeader("Access-Control-Allow-Origin","*"); //added header for CORS Policy issue
 
+        resp.addHeader("Access-Control-Allow-Methods","DELETE"); //Enable delete method in preflight response
+
         filterChain.doFilter(servletRequest,servletResponse); //request proceed to the servlet
 
     }

@@ -156,9 +156,11 @@ function loadAllCustomers() {
         }*/
 
         /*ajax request for deleteCustomer function*/
+
         $.ajax({
            url:"http://localhost:8080/Pos_System/customer",
            method:"DELETE",
+
            success:function (res){
                console.log(res);
            }
