@@ -122,7 +122,8 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Hello KITT");
 
-
+        String customerID = req.getParameter("CustID");
+        System.out.println(customerID);
     }
 
 }

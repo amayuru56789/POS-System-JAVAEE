@@ -156,11 +156,12 @@ function loadAllCustomers() {
         }*/
 
         /*ajax request for deleteCustomer function*/
-
+        /*var data = $("#customerForm").serialize();*/
+        let customerID = $("#txtCustId").val();
         $.ajax({
-           url:"http://localhost:8080/Pos_System/customer",
+           url:"http://localhost:8080/Pos_System/customer?CustID="+customerID, //Send a request using query String
            method:"DELETE",
-
+           /*data:data,*/
            success:function (res){
                console.log(res);
            }
