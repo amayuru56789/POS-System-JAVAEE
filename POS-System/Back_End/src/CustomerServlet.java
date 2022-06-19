@@ -195,6 +195,14 @@ public class CustomerServlet extends HttpServlet {
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         System.out.println("Hello KITT");
 
+        PrintWriter writer = resp.getWriter();
+
+        //gather customer information from textFields Using getParameter Method
+        String customerID = req.getParameter("customerID");
+        String customerName = req.getParameter("customerName");
+        String customerAddress = req.getParameter("customerAddress");
+        Double customerSalary = Double.valueOf(req.getParameter("customerSalary"));
+        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
 
 
     }
