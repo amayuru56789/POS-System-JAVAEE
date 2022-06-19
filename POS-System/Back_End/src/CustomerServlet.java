@@ -197,12 +197,41 @@ public class CustomerServlet extends HttpServlet {
 
         PrintWriter writer = resp.getWriter();
 
-        //gather customer information from textFields Using getParameter Method
+        /*//gather customer information from textFields Using getParameter Method
         String customerID = req.getParameter("customerID");
         String customerName = req.getParameter("customerName");
         String customerAddress = req.getParameter("customerAddress");
         Double customerSalary = Double.valueOf(req.getParameter("customerSalary"));
-        System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);
+        *//*System.out.println(customerID+" "+customerName+" "+customerAddress+" "+customerSalary);*/
+
+        /*get Customer information from json Request Using JsonReader */
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        String id = jsonObject.getString("id");
+        String name = jsonObject.getString("name");
+        String address = jsonObject.getString("address");
+        Double salary = Double.valueOf(jsonObject.getString("salary"));
+        System.out.println(id+" "+name+" "+address+" "+salary);
+
+        try {
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/'Pos System", "root", "1234");
+            PreparedStatement pstm = con.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
+            pstm.setObject(1,id);
+            pstm.setObject(2,name);
+            pstm.setObject(3,address);
+            pstm.setObject(4,salary);
+            boolean b = pstm.executeUpdate() > 0;
+            if (b){
+                writer.write("Customer Updated");
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
 
     }

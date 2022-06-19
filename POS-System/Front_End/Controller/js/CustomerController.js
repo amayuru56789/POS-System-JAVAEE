@@ -73,27 +73,27 @@ function saveCustomer(){
 loadAllCustomers();
 /*--------------------------------loadAllCustomers function for javaEE app------------------------------------*/
 function loadAllCustomers() {
-    /* $("#customerTable").empty();
-     for(var i of customerDB){
-         let row = `<tr><td>${i.getCustomerID()}</td><td>${i.getCustomerName()}</td><td>${i.getCustomerAddress()}</td><td>${i.getCustomerSalary()}</td></tr>`;
-         $("#customerTable").append(row);
-     }*/
+   /* $("#customerTable").empty();
+    for(var i of customerDB){
+        let row = `<tr><td>${i.getCustomerID()}</td><td>${i.getCustomerName()}</td><td>${i.getCustomerAddress()}</td><td>${i.getCustomerSalary()}</td></tr>`;
+        $("#customerTable").append(row);
+    }*/
 
     /*invoked ajax for send a request*/
     $("#customerTable").empty();
     $.ajax({
-        url: "http://localhost:8080/Pos_System/customer",
-        method: "GET",
+       url:"http://localhost:8080/Pos_System/customer",
+       method:"GET",
         //convert to json format
-        dataType: "json",
-        success: function (res) {
-            /*console.log("KITT");*/
-            for (const cust of res.data) {
-                /*console.log(cust.id);*/
-                let row = `<tr><td>${cust.id}</td><td>${cust.name}</td><td>${cust.address}</td><td>${cust.salary}</td></tr>`;
-                $("#customerTable").append(row);
-            }
-        }
+       dataType:"json",
+       success:function (res){
+           /*console.log("KITT");*/
+           for (const cust of res.data) {
+               /*console.log(cust.id);*/
+               let row = `<tr><td>${cust.id}</td><td>${cust.name}</td><td>${cust.address}</td><td>${cust.salary}</td></tr>`;
+               $("#customerTable").append(row);
+           }
+       }
     });
 
 //search customer
@@ -125,31 +125,31 @@ function loadAllCustomers() {
 
     /*-------------------------------updateCustomer function for javaEE app-----------------------------------*/
     function updateCustomer() {
-        /* var custId = document.getElementById("txtCustId").value;
-         var custName = document.getElementById("txtCustName").value;
-         var custAddress = document.getElementById("txtCustAddress").value;
-         var custSalary = document.getElementById("txtCustSalary").value;
+       /* var custId = document.getElementById("txtCustId").value;
+        var custName = document.getElementById("txtCustName").value;
+        var custAddress = document.getElementById("txtCustAddress").value;
+        var custSalary = document.getElementById("txtCustSalary").value;
 
-         for (var i = 0; i < customerDB.length; i++) {
-             if (customerDB[i].getCustomerID() == custId) {
-                 var customer = customerDB[i];
-                 customer.setCustomerName(custName);
-                 customer.setCustomerAddress(custAddress);
-                 customer.setCustomerSalary(custSalary);
-             }
-         }*/
-        let serialize = $("#customerForm").serialize();
-        /*implement ajax request for updateCustomer Function*/
-        $.ajax({
-            url: "http://localhost:8080/Pos_System/customer?" + serialize,
-            method: "PUT",
-            data: serialize,
-            success: function (res) {
-                /*console.log(res);*/
-                alert(res);
-                loadAllCustomers();
+        for (var i = 0; i < customerDB.length; i++) {
+            if (customerDB[i].getCustomerID() == custId) {
+                var customer = customerDB[i];
+                customer.setCustomerName(custName);
+                customer.setCustomerAddress(custAddress);
+                customer.setCustomerSalary(custSalary);
             }
-        });
+        }*/
+       let serialize = $("#customerForm").serialize();
+       /*implement ajax request for updateCustomer Function*/
+        $.ajax({
+          url:"http://localhost:8080/Pos_System/customer?"+serialize,
+          method:"PUT",
+          data: serialize,
+          success:function (res){
+              /*console.log(res);*/
+              alert(res);
+              loadAllCustomers();
+          }
+       });
     }
 
     $("#btnCustUpdate").click(function () {
@@ -177,19 +177,19 @@ function loadAllCustomers() {
         /*var data = $("#customerForm").serialize();*/
         let customerID = $("#txtCustId").val(); //Get the customer ID
         $.ajax({
-            url: "http://localhost:8080/Pos_System/customer?CustID=" + id, //Send a request using query String
-            method: "DELETE",
-            /*data:data,*/
-            success: function (res) {
-                /*console.log(res);*/
-                alert(res);
-                loadAllCustomers();
-            },
-            error: function (ob, status, a) {
-                console.log(ob);
-                console.log(status);
-                console.log(a);
-            }
+           url:"http://localhost:8080/Pos_System/customer?CustID="+id, //Send a request using query String
+           method:"DELETE",
+           /*data:data,*/
+           success:function (res){
+               /*console.log(res);*/
+               alert(res);
+               loadAllCustomers();
+           },
+           error:function (ob,status,a){
+               console.log(ob);
+               console.log(status);
+               console.log(a);
+           }
         });
 
     }
@@ -208,10 +208,10 @@ function loadAllCustomers() {
             }
         }
     });
-}
+
 //validation
 // customer reguler expressions
-    /*const regExCustId = /^(C00-)[0-9]{1,3}$/;
+    const regExCustId = /^(C00-)[0-9]{1,3}$/;
     const regExCustName = /^[A-z ]{5,20}$/;
     const regExCustAddress = /^[0-9/A-z. ,]{7,}$/;
     const regExCustSalary = /^[0-9]{1,}[.]?[0-9]{1,2}$/;
@@ -235,7 +235,7 @@ function loadAllCustomers() {
 
         if (eventOb.key == "Control") {
             var typedCustomerID = $("#txtCustId").val();
-            /!*var srcCustomer = searchCustomerFromID(typedCustomerID);*!/
+            /*var srcCustomer = searchCustomerFromID(typedCustomerID);*/
             $("#txtCustId").val(srcCustomer.getCustomerID());
             $("#txtCustName").val(srcCustomer.getCustomerName());
             $("#txtCustAddress").val(srcCustomer.getCustomerAddress());
@@ -362,7 +362,7 @@ function loadAllCustomers() {
     $('#btnAdd').click(function () {
         checkIfValidCustomer();
     });
-}*/
+}
 //validation ended
 
 /*save item*//*
