@@ -138,7 +138,18 @@ function loadAllCustomers() {
                 customer.setCustomerSalary(custSalary);
             }
         }*/
-
+       let serialize = $("#customerForm").serialize();
+       /*implement ajax request for updateCustomer Function*/
+        $.ajax({
+          url:"http://localhost:8080/Pos_System/customer?"+serialize,
+          method:"PUT",
+          data: serialize,
+          success:function (res){
+              /*console.log(res);*/
+              alert(res);
+              loadAllCustomers();
+          }
+       });
     }
 
     $("#btnCustUpdate").click(function () {
@@ -164,7 +175,7 @@ function loadAllCustomers() {
 
         /*ajax request for deleteCustomer function*/
         /*var data = $("#customerForm").serialize();*/
-        let customerID = $("#txtCustId").val();
+        let customerID = $("#txtCustId").val(); //Get the customer ID
         $.ajax({
            url:"http://localhost:8080/Pos_System/customer?CustID="+id, //Send a request using query String
            method:"DELETE",

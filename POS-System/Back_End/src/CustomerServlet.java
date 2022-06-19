@@ -142,12 +142,16 @@ public class CustomerServlet extends HttpServlet {
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /*System.out.println("Hello KITT");*/
 
+        resp.setContentType("application/json");
+
         //get customerID Using getParameter Method
         String customerID = req.getParameter("CustID");
         System.out.println(customerID);
 
+        /*--------------------Writer for send a Response-------------------*/
+        PrintWriter writer = resp.getWriter();
         try {
-            PrintWriter writer = resp.getWriter();
+
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pos System", "root", "1234");
@@ -172,6 +176,7 @@ public class CustomerServlet extends HttpServlet {
             response.add("code",500);
             response.add("data",e.getLocalizedMessage());
             response.add("message","Error");
+            writer.print(response.build());
 
         } catch (SQLException e) {
             e.printStackTrace();
@@ -179,11 +184,19 @@ public class CustomerServlet extends HttpServlet {
 
             JsonObjectBuilder response = Json.createObjectBuilder();
             response.add("code",500);
-            response.add("data",e.getLocalizedMessage());
             response.add("message","Error");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
         }
 
     }
 
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        System.out.println("Hello KITT");
+
+
+
+    }
 
 }
