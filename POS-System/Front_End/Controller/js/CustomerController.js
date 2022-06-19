@@ -56,7 +56,13 @@ function saveCustomer(){
        method: "POST",
        data:data, //if we send data with the request
        success:function (res){
-           console.log(res);
+           if (res.status==200){
+               alert(res.message);
+               loadAllCustomers();
+           }else {
+               alert(res.data);
+           }
+           /*console.log(res.message);*/
        },
         error:function (ob,textStatus, error){
            alert(textStatus);
@@ -119,7 +125,7 @@ function loadAllCustomers() {
 
     /*-------------------------------updateCustomer function for javaEE app-----------------------------------*/
     function updateCustomer() {
-        var custId = document.getElementById("txtCustId").value;
+       /* var custId = document.getElementById("txtCustId").value;
         var custName = document.getElementById("txtCustName").value;
         var custAddress = document.getElementById("txtCustAddress").value;
         var custSalary = document.getElementById("txtCustSalary").value;
@@ -131,7 +137,8 @@ function loadAllCustomers() {
                 customer.setCustomerAddress(custAddress);
                 customer.setCustomerSalary(custSalary);
             }
-        }
+        }*/
+
     }
 
     $("#btnCustUpdate").click(function () {
@@ -159,17 +166,25 @@ function loadAllCustomers() {
         /*var data = $("#customerForm").serialize();*/
         let customerID = $("#txtCustId").val();
         $.ajax({
-           url:"http://localhost:8080/Pos_System/customer?CustID="+customerID, //Send a request using query String
+           url:"http://localhost:8080/Pos_System/customer?CustID="+id, //Send a request using query String
            method:"DELETE",
            /*data:data,*/
            success:function (res){
-               console.log(res);
+               /*console.log(res);*/
+               alert(res);
+               loadAllCustomers();
+           },
+           error:function (ob,status,a){
+               console.log(ob);
+               console.log(status);
+               console.log(a);
            }
         });
 
     }
 
     $("#btnCustDelete").click(function () {
+        //get customerID
         let id = $("#txtCustId").val();
 
         let option = confirm(`Do you want delete Customer : ${id} `);

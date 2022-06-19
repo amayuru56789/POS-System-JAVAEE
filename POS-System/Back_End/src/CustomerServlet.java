@@ -1,9 +1,7 @@
 import com.mysql.cj.jdbc.Driver;
 import com.mysql.cj.jdbc.JdbcConnection;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.json.JsonObjectBuilder;
+import javax.json.*;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -81,6 +79,8 @@ public class CustomerServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /*System.out.println("KITT");*/
 
+        resp.setContentType("application/json");
+
         /*--------------------Writer for send a Response-------------------*/
         PrintWriter writer = resp.getWriter();
 
@@ -100,17 +100,37 @@ public class CustomerServlet extends HttpServlet {
             pstm.setObject(2,customerName);
             pstm.setObject(3,customerAddress);
             pstm.setObject(4,customerSalary);
-            boolean b = pstm.executeUpdate() > 0;
-            if (b){
-                writer.write("Customer Added");
+
+            if (pstm.executeUpdate() > 0){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                resp.setStatus(HttpServletResponse.SC_CREATED); //201
+                response.add("status",200);
+                response.add("message","Customer Added successfully...");
+                response.add("data","");
+                writer.print(response.build());
             }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
-            resp.sendError(500,e.getMessage());
+            resp.setStatus(HttpServletResponse.SC_OK); //200
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",400);
+            response.add("message","Error...");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
+
+            /*resp.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR); //500*/
         } catch (SQLException e) {
             e.printStackTrace();
-            resp.sendError(500,e.getMessage());
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            /*resp.setStatus(500);*/
+            response.add("status",400);
+            response.add("message","Error...");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
+
+            resp.setStatus(HttpServletResponse.SC_OK);
         }
 
         /*PrintWriter writer = resp.getWriter();
@@ -120,10 +140,50 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Hello KITT");
+        /*System.out.println("Hello KITT");*/
 
+        //get customerID Using getParameter Method
         String customerID = req.getParameter("CustID");
         System.out.println(customerID);
+
+        try {
+            PrintWriter writer = resp.getWriter();
+
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/Pos System", "root", "1234");
+            PreparedStatement pstm = con.prepareStatement("delete from Customer where customerID=?");
+            pstm.setObject(1,customerID);
+
+            /*boolean b = pstm.executeUpdate() > 0;*/
+
+            if (pstm.executeUpdate() > 0){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("data","");
+                response.add("message","Customer Successfully Deleted");
+                response.add("code",200);
+                writer.print(response.build());
+            }
+
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+            resp.setStatus(200);
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("code",500);
+            response.add("data",e.getLocalizedMessage());
+            response.add("message","Error");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.setStatus(200);
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("code",500);
+            response.add("data",e.getLocalizedMessage());
+            response.add("message","Error");
+        }
+
     }
+
 
 }
