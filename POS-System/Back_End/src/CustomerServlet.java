@@ -162,9 +162,15 @@ public class CustomerServlet extends HttpServlet {
 
             if (pstm.executeUpdate() > 0){
                 JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("code",200);
                 response.add("data","");
                 response.add("message","Customer Successfully Deleted");
-                response.add("code",200);
+                writer.print(response.build());
+            }else{
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("code",400);
+                response.add("data","Wrong ID inserted");
+                response.add("message","Customer ");
                 writer.print(response.build());
             }
 
@@ -193,7 +199,7 @@ public class CustomerServlet extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println("Hello KITT");
+        /*System.out.println("Hello KITT");*/
 
         PrintWriter writer = resp.getWriter();
 
@@ -213,7 +219,7 @@ public class CustomerServlet extends HttpServlet {
         Double salary = Double.valueOf(jsonObject.getString("salary"));
         System.out.println(id+" "+name+" "+address+" "+salary);
 
-        try {
+        /*try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/'Pos System", "root", "1234");
@@ -231,7 +237,7 @@ public class CustomerServlet extends HttpServlet {
             e.printStackTrace();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
+        }*/
 
 
     }

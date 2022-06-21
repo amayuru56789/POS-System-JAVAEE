@@ -138,12 +138,22 @@ function loadAllCustomers() {
                 customer.setCustomerSalary(custSalary);
             }
         }*/
-       let serialize = $("#customerForm").serialize();
+
+        /*create json ob*/
+        var customerOb={
+            "id":"C00-1",
+            "name":"Amayuru",
+            "address":"Colombo",
+            "salary":"100000.00"
+        }
+
+       /*let serialize = $("#customerForm").serialize();*/
        /*implement ajax request for updateCustomer Function*/
         $.ajax({
-          url:"http://localhost:8080/Pos_System/customer?"+serialize,
+          url:"http://localhost:8080/Pos_System/customer",
           method:"PUT",
-          data: serialize,
+          contentType:"application/json", //request content type json
+          data:JSON.stringify(customerOb) , //convert valid json String
           success:function (res){
               /*console.log(res);*/
               alert(res);
@@ -182,8 +192,16 @@ function loadAllCustomers() {
            /*data:data,*/
            success:function (res){
                /*console.log(res);*/
-               alert(res);
-               loadAllCustomers();
+               if (res.status==200){
+                   alert(res.message);
+                   loadAllCustomers();
+               }else if (res.status==400){
+                   alert(res.data);
+               }else {
+                   alert(res.data);
+               }
+               /*alert(res);
+               loadAllCustomers();*/
            },
            error:function (ob,status,a){
                console.log(ob);
