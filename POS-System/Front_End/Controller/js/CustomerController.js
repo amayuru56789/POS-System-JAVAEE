@@ -141,10 +141,10 @@ function loadAllCustomers() {
 
         /*create json ob*/
         var customerOb={
-            "id":"C00-1",
-            "name":"Amayuru",
-            "address":"Colombo",
-            "salary":"100000.00"
+            id:$("#txtCustId").val(),
+            name:$("#txtCustName").val(),
+            address:$("#txtCustAddress").val(),
+            salary:$("#txtCustSalary").val()
         }
 
        /*let serialize = $("#customerForm").serialize();*/
@@ -156,8 +156,20 @@ function loadAllCustomers() {
           data:JSON.stringify(customerOb) , //convert valid json String
           success:function (res){
               /*console.log(res);*/
-              alert(res);
-              loadAllCustomers();
+              if (res.status==200){
+                  alert(res.message);
+                  loadAllCustomers();
+              }else if (res.status==400){
+                  alert(res.message);
+
+              }else {
+                  alert(res.data);
+              }
+              /*alert(res);
+              loadAllCustomers();*/
+          },
+          error:function (ob, error) {
+              console.log(ob);
           }
        });
     }

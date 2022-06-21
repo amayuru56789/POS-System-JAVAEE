@@ -200,7 +200,7 @@ public class CustomerServlet extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         /*System.out.println("Hello KITT");*/
-
+        resp.setContentType("application/json");
         PrintWriter writer = resp.getWriter();
 
         /*//gather customer information from textFields Using getParameter Method
@@ -217,27 +217,47 @@ public class CustomerServlet extends HttpServlet {
         String name = jsonObject.getString("name");
         String address = jsonObject.getString("address");
         Double salary = Double.valueOf(jsonObject.getString("salary"));
-        System.out.println(id+" "+name+" "+address+" "+salary);
+        /*System.out.println(id+" "+name+" "+address+" "+salary);*/
 
-        /*try {
+        try {
 
             Class.forName("com.mysql.cj.jdbc.Driver");
             Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/'Pos System", "root", "1234");
-            PreparedStatement pstm = con.prepareStatement("update Customer set name=?,address=?,salary=? where id=?");
+            PreparedStatement pstm = con.prepareStatement("update Customer set customerName=?,customerAddress=?,customerSalary=? where customerID=?");
             pstm.setObject(1,id);
             pstm.setObject(2,name);
             pstm.setObject(3,address);
             pstm.setObject(4,salary);
-            boolean b = pstm.executeUpdate() > 0;
-            if (b){
-                writer.write("Customer Updated");
+
+            if (pstm.executeUpdate() > 0){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status",200);
+                response.add("message","Customer Updated");
+                response.add("data","");
+                writer.print(response.build());
+            }else {
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status",400);
+                response.add("message","Customer Update failed...");
+                response.add("data","");
+                writer.print(response.build());
             }
 
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",500);
+            response.add("message","Error...");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",500);
+            response.add("message","Error...");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
+        }
 
 
     }
