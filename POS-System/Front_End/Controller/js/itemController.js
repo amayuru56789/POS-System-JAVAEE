@@ -42,6 +42,7 @@ function saveItem(){
     itemDB.push(new ItemDTO(itemCode,itemName,price,qty));*/
 
     /*----------------------ajax for saveItem function---------------------------*/
+    var data = $("#itemForm").serialize(); //get information txtFields using form data
     $.ajax({
         url: "http://localhost:8080/Pos_System/item",
         method: "POST",
