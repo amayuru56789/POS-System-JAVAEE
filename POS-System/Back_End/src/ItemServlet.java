@@ -1,7 +1,9 @@
 import org.apache.commons.dbcp2.BasicDataSource;
 
 import javax.json.Json;
+import javax.json.JsonObject;
 import javax.json.JsonObjectBuilder;
+import javax.json.JsonReader;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -115,4 +117,57 @@ public class ItemServlet extends HttpServlet {
 
 
     }
+
+    @Override
+    protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        resp.setContentType("application/json");
+
+        PrintWriter writer = resp.getWriter();
+
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("bds");
+
+        /*get Item information from json Request Using JsonReader */
+        JsonReader reader = Json.createReader(req.getReader());
+        JsonObject jsonObject = reader.readObject();
+        String code = jsonObject.getString("code");
+        String name = jsonObject.getString("name");
+        Double price = Double.valueOf(jsonObject.getString("price"));
+        int qtyOnHand = Integer.parseInt(jsonObject.getString("qtyOnHand"));
+
+        try {
+
+            Connection con = bds.getConnection();
+            PreparedStatement pstm = con.prepareStatement("update Item set itemName=?,itemPrice=?,qtyOnHand=? where itemCode=?");
+            pstm.setObject(1,code);
+            pstm.setObject(2,name);
+            pstm.setObject(3,price);
+            pstm.setObject(4,qtyOnHand);
+
+            if (pstm.executeUpdate() > 0){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status",200);
+                response.add("message","Item Updated");
+                response.add("data","");
+                writer.print(response.build());
+            }else {
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("status",400);
+                response.add("message","Item Update failed...");
+                response.add("data","");
+                writer.print(response.build());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",500);
+            response.add("message","Error...");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
+        }
+
+    }
+
 }
