@@ -66,4 +66,53 @@ public class ItemServlet extends HttpServlet {
 
     }
 
+    @Override
+    protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        resp.setContentType("application/json");
+
+        //get itemCode Using getParameter Method
+        String itemCode = req.getParameter("ItemCode");
+
+        /*--------------------Writer for send a Response-------------------*/
+        PrintWriter writer = resp.getWriter();
+
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("bds");
+
+        try {
+
+
+            Connection con = bds.getConnection();
+            PreparedStatement pstm = con.prepareStatement("delete from Item where itemCode=?");
+            pstm.setObject(1,itemCode);
+
+
+            if (pstm.executeUpdate() > 0){
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("code",200);
+                response.add("data","");
+                response.add("message","Item Successfully Deleted");
+                writer.print(response.build());
+            }else{
+                JsonObjectBuilder response = Json.createObjectBuilder();
+                response.add("code",400);
+                response.add("data","Wrong CODE inserted");
+                response.add("message"," ");
+                writer.print(response.build());
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            resp.setStatus(200);
+
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("code",500);
+            response.add("message","Error");
+            response.add("data",e.getLocalizedMessage());
+            writer.print(response.build());
+        }
+
+
+    }
 }

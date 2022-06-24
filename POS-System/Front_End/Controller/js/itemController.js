@@ -124,7 +124,7 @@ $("#btnItemUpdate").click(function() {
 
 /*------------------------------deleteItem function for javaEE app------------------------------------*/
 function deleteItem(code){
-    let item;
+    /*let item;
     if(code!=null){
         for(var i=0; i<itemDB.length; i++){
             if(code==itemDB[i].getItemCODE()){
@@ -136,7 +136,28 @@ function deleteItem(code){
         return true;
     }else{
         return false;
-    }
+    }*/
+    $.ajax({
+        url:"http://localhost:8080/Pos_System/item?ItemCode="+code, //Send a request using query String
+        method:"DELETE",
+        success:function (res){
+
+            if (res.status==200){
+                alert(res.message);
+                loadAllCustomers();
+            }else if (res.status==400){
+                alert(res.data);
+            }else {
+                alert(res.data);
+            }
+
+        },
+        error:function (ob,status,a){
+            console.log(ob);
+            console.log(status);
+            console.log(a);
+        }
+    });
 
 }
 
