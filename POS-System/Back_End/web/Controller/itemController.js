@@ -23,42 +23,23 @@ $("#btnItem").click(function() {
 
 /*--------------------------------saveItem function for javaEE app----------------------------------------*/
 function saveItem(){
-    /*//get item information from the textFields
+    //get item information from the textFields
     var itemCode = $("#txtCode").val();
     var itemName = $("#txtItemName").val();
     var price = $("#txtPrice").val();
     var qty = $("#txtQty").val();
 
     //create object
-    /!*var itemOb = {
+    /*var itemOb = {
         code:itemCode,
         name:itemName,
         price:price,
         qty:qty
     };
 
-    itemDB.push(itemOb);*!/
-    /!*Pass Values for the itemArray*!/
-    itemDB.push(new ItemDTO(itemCode,itemName,price,qty));*/
-
-    /*----------------------ajax for saveItem function---------------------------*/
-    $.ajax({
-        url: "http://localhost:8080/Pos_System/item",
-        method: "POST",
-        data:data, //if we send data with the request
-        success:function (res){
-            if (res.status==200){
-                alert(res.message);
-                loadAllItems();
-            }else {
-                alert(res.data);
-            }
-            /*console.log(res.message);*/
-        },
-        error:function (ob,textStatus, error){
-            alert(textStatus);
-        }
-    });
+    itemDB.push(itemOb);*/
+    /*Pass Values for the itemArray*/
+    itemDB.push(new ItemDTO(itemCode,itemName,price,qty));
 }
 
 /*--------------------------------loadAllItems function for javaEE app------------------------------------*/
