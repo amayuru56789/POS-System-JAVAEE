@@ -1,9 +1,6 @@
 import org.apache.commons.dbcp2.BasicDataSource;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonObjectBuilder;
-import javax.json.JsonReader;
+import javax.json.*;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -12,14 +9,61 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 
 //Exact mapping for bind itemServlet
 @WebServlet(urlPatterns = "/item")
 public class ItemServlet extends HttpServlet {
+
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
+        //Mime types
+        resp.setContentType("application/json");
+
+        /*--------------------Writer for send a Response-------------------*/
+        PrintWriter writer = resp.getWriter();
+
+        /*--------------------Get connection from Database Connection Pool-------------------*/
+        ServletContext servletContext = req.getServletContext();
+        BasicDataSource bds = (BasicDataSource) servletContext.getAttribute("bds");
+
+        //arrayBuilder
+        JsonArrayBuilder arrayBuilder = Json.createArrayBuilder();
+
+        try {
+
+            Connection con = bds.getConnection();
+            PreparedStatement pstm = con.prepareStatement("select * from Item");
+            ResultSet rst = pstm.executeQuery();
+
+            while (rst.next()) {
+
+                /*--------------------------objectBuilder for generate json object---------------------------*/
+                JsonObjectBuilder objBuilder = Json.createObjectBuilder();
+                objBuilder.add("code",rst.getString(1));
+                objBuilder.add("name",rst.getString(2));
+                objBuilder.add("price",rst.getDouble(3));
+                objBuilder.add("qtyOnHand",rst.getInt(4));
+
+                arrayBuilder.add(objBuilder.build()); //add to the array of json
+
+            }
+            /*---------------------------objectBuilder for generate Response----------------------------*/
+            JsonObjectBuilder response = Json.createObjectBuilder();
+            response.add("status",200);
+            response.add("message","Done");
+            response.add("data",arrayBuilder.build());
+
+            /*System.out.println(arrayBuilder.build());*/
+            writer.print(response.build());
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

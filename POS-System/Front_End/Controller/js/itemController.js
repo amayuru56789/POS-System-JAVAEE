@@ -64,15 +64,30 @@ function saveItem(){
 
 /*--------------------------------loadAllItems function for javaEE app------------------------------------*/
 function loadAllItems(){
-    $("#itemTable").empty();
-    /*for(var i=0; i<itemDB.length; i++){
+ /*   $("#itemTable").empty();
+    /!*for(var i=0; i<itemDB.length; i++){
         var row = `<tr><td>${itemDB[i].code}</td><td>${itemDB[i].name}</td><td>${itemDB[i].price}</td><td>${itemDB[i].qty}</td></tr>`;
         $("#itemTable").append(row);
-    }*/
+    }*!/
     for(var i of itemDB){
         let row = `<tr><td>${i.getItemCODE()}</td><td>${i.getItemName()}</td><td>${i.getItemPrice()}</td><td>${i.getItemQty()}</td></tr>`;
         $("#itemTable").append(row);
-    }
+    }*/
+    /*invoked ajax for send a request*/
+    $("#itemTable").empty();
+    $.ajax({
+        url:"http://localhost:8080/Pos_System/item",
+        method:"GET",
+        //convert to json format
+        dataType:"json",
+        success:function (res){
+            /*console.log("KITT");*/
+            for (const item of res.data) {
+                let row = `<tr><td>${item.code}</td><td>${item.name}</td><td>${item.price}</td><td>${item.qtyOnHand}</td></tr>`;
+                $("#itemTable").append(row);
+            }
+        }
+    });
 }
 
 //search item
@@ -102,7 +117,7 @@ function searchItem(code){
 
 /*-------------------------------updateItem function for javaEE app-----------------------------------*/
 function updateItem(){
-    var itemCode = document.getElementById("txtCode").value;
+/*    var itemCode = document.getElementById("txtCode").value;
     var itemName = document.getElementById("txtItemName").value;
     var itemPrice = document.getElementById("txtPrice").value;
     var itemQty = document.getElementById("txtQty").value;
@@ -114,7 +129,37 @@ function updateItem(){
              item.setItemPrice(itemPrice);
              item.setItemQty(itemQty);
         }
+    }*/
+    /*create json ob*/
+    var itemOb={
+        code:$("#txtCode").val(),
+        name:$("#txtItemName").val(),
+        price:$("#txtPrice").val(),
+        qtyOnHand:$("#txtQty").val()
     }
+
+    $.ajax({
+        url:"http://localhost:8080/Pos_System/item",
+        method:"PUT",
+        contentType:"application/json", //request content type json
+        data:JSON.stringify(customerOb) , //convert valid json String
+        success:function (res){
+            /*console.log(res);*/
+            if (res.status==200){
+                alert(res.message);
+                loadAllCustomers();
+            }else if (res.status==400){
+                alert(res.message);
+
+            }else {
+                alert(res.data);
+            }
+
+        },
+        error:function (ob, error) {
+            console.log(ob);
+        }
+    });
 }
 
 $("#btnItemUpdate").click(function() {
